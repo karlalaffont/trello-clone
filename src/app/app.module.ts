@@ -13,6 +13,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BoardComponent } from './pages/board/board.component';
 import { DialogModule } from '@angular/cdk/dialog';
 import { TodoDialogComponent } from './components/todo-dialog/todo-dialog.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import { ScrollComponent} from  './pages/scroll/scroll.component';
+import { HttpClientModule} from '@angular/common/http';
+import {CdkTableModule} from '@angular/cdk/table';
+import { TableComponent} from  './pages/table/table.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +29,10 @@ import { TodoDialogComponent } from './components/todo-dialog/todo-dialog.compon
     BoardsComponent,
     NavbarComponent,
     BoardComponent,
-    TodoDialogComponent
+    TodoDialogComponent,
+    ScrollComponent,
+    TableComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -31,7 +41,12 @@ import { TodoDialogComponent } from './components/todo-dialog/todo-dialog.compon
     FontAwesomeModule,
     CdkAccordionModule,
     DragDropModule,
-    DialogModule
+    DialogModule,
+    ScrollingModule,
+    HttpClientModule,
+    CdkTableModule,
+    ReactiveFormsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
