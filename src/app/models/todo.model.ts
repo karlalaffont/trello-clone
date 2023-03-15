@@ -1,7 +1,8 @@
 export interface ToDo {
   id: string;
-  title:string
+  title: string;
 }
+
 export interface Column {
   title: string;
   todos: ToDo[];
