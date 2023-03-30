@@ -5,28 +5,35 @@ import { environment } from '@environments/environment';
 import { switchMap, tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { responseLogin } from '@models/auth.model';
+import { User } from '@models/user.model';
+import { BehaviorSubject } from 'rxjs';
+import { CheckToken } from '@interceptors/token.interceptor';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   apiUrl = environment.API_URL;
+  user$ = new BehaviorSubject <User | null>(null);
 
-  constructor(private http: HttpClient,
-    private tokenService: TokenService) {}
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
 
-  login(email: string, password: string) {
-    return this.http.post<responseLogin>(`${this.apiUrl}/api/v1/auth/login`, {
-      email,
-      password,
-    })
-    .pipe(
-      tap(response => {
-        this.tokenService.savetoken(response.access_token)
-      })
-    );
+  getDataUser(){
+    return this.user$.getValue();
   }
 
+  login(email: string, password: string) {
+    return this.http
+      .post<responseLogin>(`${this.apiUrl}/api/v1/auth/login`, {
+        email,
+        password,
+      })
+      .pipe(
+        tap((response) => {
+          this.tokenService.savetoken(response.access_token);
+        })
+      );
+  }
 
   register(name: string, email: string, password: string) {
     return this.http.post(`${this.apiUrl}/api/v1/auth/register`, {
@@ -51,20 +58,27 @@ export class AuthService {
   }
 
   recovery(email: string) {
-    return this.http.post(
-      `${this.apiUrl}/api/v1/auth/recovery`,
-      { email }
+    return this.http.post(`${this.apiUrl}/api/v1/auth/recovery`, { email });
+  }
+
+  changePassword(token: string, newPassword: string) {
+    return this.http.post(`${this.apiUrl}/api/v1/auth/change-password`, {
+      token,
+      newPassword,
+    });
+  }
+
+
+  getProfile() {
+
+    return this.http.get<User>(`${this.apiUrl}/api/v1/auth/profile`, {context: CheckToken()}).pipe(
+      tap((user) => {
+        this.user$.next(user);
+      })
     );
   }
 
-  changePassword(token:string, newPassword: string){
-    return this.http.post(
-      `${this.apiUrl}/api/v1/auth/change-password`,
-      { token, newPassword }
-    );
-  }
-
-  logout(){
+  logout() {
     this.tokenService.removeToken();
   }
 }
