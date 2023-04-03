@@ -9,6 +9,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenService } from '@services/token.service';
+import { AuthService } from '@services/auth.service';
 
 const CHECK_TOKEN = new HttpContextToken<boolean>(() => false);
 
@@ -20,7 +21,8 @@ export function CheckToken(){
 export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private authService: AuthService
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
