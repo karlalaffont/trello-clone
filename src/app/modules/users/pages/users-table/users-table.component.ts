@@ -13,25 +13,26 @@ export class UsersTableComponent implements OnInit {
 
   dataSource = new DataSourceUser();
   columns: string[] = ['id', 'avatar', 'name', 'email'];
-  user: User | null = null
+  user: User | null = null;
 
-  constructor( private usersService: UsersService,
-    private authService: AuthService) {
-
-  }
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.usersService.getUsers()
-    .subscribe(users => {
-      this.dataSource.init(users)
-    })
-    this.authService.user$.subscribe( user => {
+    this.getUsers();
+    this.authService.user$
+    .subscribe(user => {
       this.user = user;
     })
-    console.log(this.user);
-  /*   this.authService.getProfile().subscribe(
-      user => {
-       this.user = user;
-      }); */
   }
+
+  getUsers() {
+    this.usersService.getUsers()
+    .subscribe(users => {
+      this.dataSource.init(users);
+    })
+  }
+
 }

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutComponent } from './components/layout/layout.component';
 import { AuthGuard } from '@guards/auth.guard';
+
 const routes: Routes = [
   {
     path: '',
@@ -15,19 +16,19 @@ const routes: Routes = [
       },
       {
         path: 'boards',
-        canActivate: [AuthGuard],
+        canActivate: [ AuthGuard ],
         loadChildren: () =>
           import('../boards/boards.module').then((m) => m.BoardsModule),
       },
       {
         path: 'profile',
-        canActivate: [AuthGuard],
+        canActivate: [ AuthGuard ],
         loadChildren: () =>
           import('../profile/profile.module').then((m) => m.ProfileModule),
       },
       {
         path: 'users',
-        canActivate: [AuthGuard],
+        canActivate: [ AuthGuard ],
         loadChildren: () =>
           import('../users/users.module').then((m) => m.UsersModule),
       },

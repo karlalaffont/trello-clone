@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import { CustomValidators } from '@utils/validators';
 import { AuthService } from '@services/auth.service';
 import { RequestStatus } from '@models/request-status.model';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-recovery-form',
@@ -33,22 +33,22 @@ export class RecoveryFormComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router,
-    ) {
-      this.route.queryParamMap.subscribe(params => {
-        const token = params.get('token');
-        if (token){
-          this.token = token
-        } else {
-          this.router.navigate(['/login'])
-        }
-      })
-    }
+    private router: Router
+  ) {
+    this.route.queryParamMap.subscribe(params => {
+      const token = params.get('token');
+      if (token) {
+        this.token = token;
+      } else {
+        this.router.navigate(['/login']);
+      }
+    });
+  }
 
   recovery() {
     if (this.form.valid) {
       const { newPassword } = this.form.getRawValue();
-      this.status = 'loading'
+      this.status = 'loading';
       this.authService.changePassword(this.token, newPassword)
       .subscribe({
         next: () => {
